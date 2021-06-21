@@ -17,7 +17,7 @@ public class Proc {
   private int[] servReq;
   private int[] servGiv;
   private boolean binded = false;
-  private com.skynet.skynet.Machine boundedTo;
+  private Machine boundedTo;
 
   private int numRss;
 

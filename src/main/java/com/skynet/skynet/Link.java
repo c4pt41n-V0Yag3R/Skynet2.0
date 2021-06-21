@@ -60,7 +60,7 @@ public class Link {
     }
     String res = "";
     for (Proc p : connMap.keySet()) {
-      res += "PROC " + proc.getID() + "(bound to MACH " + mach.getID() + ") gets service " + connMap.get(p)
+      res += "PROC " + proc.getID() + "(bound to MACH " + mach.getID() + ") can get service " + connMap.get(p)
           + " from PROC " + p.getID() + "\n";
     }
     return res;
