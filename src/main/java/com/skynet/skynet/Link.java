@@ -1,6 +1,9 @@
 package com.skynet.skynet;
 
+import java.util.*;
+
 public class Link {
+  private static final Map<Proc, Integer> MAP = (Map<Proc, Integer>) new HashMap<Proc, Integer>();
   private int[] servicesNeeded;
   private int[] servicesProvided;
   private Proc proc;
@@ -38,6 +41,25 @@ public class Link {
     if (p.getNumRss() > m.getRssAvail() || p.getBinded())
       throw new BadLinkingException(
           "LINK BETWEEN: Process " + p.getID() + " AND Machine " + m.getID() + " IS IMPOSSIBLE; bad rss use");
+  }
+
+  public String canHazServs(ArrayList<Link> link_list) {
+    Map<Proc, Integer> connMap = MAP;
+    for (Link link : link_list) {
+      for (int serv : link.getServicesProvided()) {
+        for (int serv2 : this.getServicesNeeded()) {
+          if (serv == serv2) {
+            connMap.put(link.proc, serv);
+          }
+        }
+      }
+    }
+    String res = "";
+    for (Proc p : connMap.keySet()) {
+      res += "PROC " + proc.getID() + "(bound to MACH " + mach.getID() + ") gets service " + connMap.get(p)
+          + " from PROC " + p.getID() + "\n";
+    }
+    return res;
   }
 
   public int[] getServicesNeeded() {

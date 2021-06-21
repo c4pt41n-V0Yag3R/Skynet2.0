@@ -49,10 +49,10 @@ public class Main {
     // System.out.println(link_list.get(0));
 
     // Pair links up with e.o. to share services if needed
-    // for (int i = 0; i < link_list.size(); i++) {
-    // for (int j = i+1; j < link_list.size()-1; j++) {
-
-    // }
-    // }
+    for (Link link : link_list) {
+      System.out.println(link.canHazServs(link_list));
+    }
+    System.out.println(Arrays.toString(proc_list.toArray()));
+    System.out.println(Arrays.toString(mach_list.toArray()));
   }
 }
