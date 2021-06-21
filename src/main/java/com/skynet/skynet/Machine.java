@@ -33,6 +33,10 @@ public class Machine {
     }
   }
 
+  public boolean equals(Machine m) {
+    return ((iD == m.getID()) && (type == m.getMachType()));
+  }
+
   public int getID() {
     return iD;
   }

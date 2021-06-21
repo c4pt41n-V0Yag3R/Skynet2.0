@@ -44,15 +44,10 @@ public class Main {
       }
       link_list.add(new Link(proc, minMach, false));
     }
-    // System.out.println(Arrays.toString(process_list.toArray()));
-    // System.out.println(Arrays.toString(machine_list.toArray()));
-    // System.out.println(link_list.get(0));
-
     // Pair links up with e.o. to share services if needed
     for (Link link : link_list) {
-      System.out.println(link.canHazServs(link_list));
+      System.out.println(link.canHazServs(link_list, false));
     }
-    System.out.println(Arrays.toString(proc_list.toArray()));
-    System.out.println(Arrays.toString(mach_list.toArray()));
+    System.out.println(link_list);
   }
 }

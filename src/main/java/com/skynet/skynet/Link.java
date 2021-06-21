@@ -43,9 +43,13 @@ public class Link {
           "LINK BETWEEN: Process " + p.getID() + " AND Machine " + m.getID() + " IS IMPOSSIBLE; bad rss use");
   }
 
-  public String canHazServs(ArrayList<Link> link_list) {
+  public String canHazServs(ArrayList<Link> link_list, boolean selfServicing) {
     Map<Proc, Integer> connMap = MAP;
     for (Link link : link_list) {
+      if (!selfServicing) {
+        if (equals(link))
+          continue;
+      }
       for (int serv : link.getServicesProvided()) {
         for (int serv2 : this.getServicesNeeded()) {
           if (serv == serv2) {
@@ -60,6 +64,13 @@ public class Link {
           + " from PROC " + p.getID() + "\n";
     }
     return res;
+  }
+
+  private boolean equals(Link link) {
+    /**
+     * Link A = Link B if they connect the same proc to the same mach
+     */
+    return (proc.equals(link.proc) && mach.equals(link.mach));
   }
 
   public int[] getServicesNeeded() {
@@ -79,6 +90,6 @@ public class Link {
   }
 
   public String toString() {
-    return "PROCESS " + proc.getID() + "-> MACHINE " + mach.getID() + "\n" + proc.toString() + mach.toString();
+    return "PROC " + proc.getID() + " -> MACH " + mach.getID() + "\n" + proc.toString() + mach.toString();
   }
 }

@@ -48,6 +48,10 @@ public class Proc {
     }
   }
 
+  public boolean equals(Proc p) {
+    return iD == p.getID();
+  }
+
   public int getID() {
     return iD;
   }
