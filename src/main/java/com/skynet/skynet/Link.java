@@ -50,8 +50,8 @@ public class Link {
         if (equals(link))
           continue;
       }
-      for (int serv : link.getServicesProvided()) {
-        for (int serv2 : this.getServicesNeeded()) {
+      for (int serv : this.getServicesNeeded()) {
+        for (int serv2 : link.getServicesProvided()) {
           if (serv == serv2) {
             connMap.put(link.proc, serv);
           }

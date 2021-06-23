@@ -1,0 +1,7 @@
+com/skynet/skynet/BadProcException.class
+com/skynet/skynet/BadMachineException.class
+com/skynet/skynet/Machine.class
+com/skynet/skynet/Proc.class
+com/skynet/skynet/Link.class
+com/skynet/skynet/BadLinkingException.class
+com/skynet/skynet/Main.class
