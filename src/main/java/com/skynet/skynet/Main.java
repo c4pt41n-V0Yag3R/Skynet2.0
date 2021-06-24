@@ -26,7 +26,9 @@ public class Main {
       int numRss = rand.nextInt(5) + 5;
       proc_list.add(new Proc(i, types_arr, sReq_arr, sGivd_arr, numRss));
     }
-
+    gson.toJson(proc_list, writer);
+    writer.flush();
+    writer.close();
     for (int i = 0; i < 5; i++) {// set up random machines
       int type = rand.nextInt(5) + 1;
       int numRss = rand.nextInt(5) + 5;
