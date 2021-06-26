@@ -1,0 +1,41 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "definitions": {
+    "process": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "allowed_types": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "servicesReq": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "servicesGivd": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "numRssNeeded": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "iD",
+        "allowed_types",
+        "servicesReq",
+        "servicesGivd",
+        "numRssNeeded"
+      ]
+    }
+  }
+}
