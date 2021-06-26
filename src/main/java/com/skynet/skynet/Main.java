@@ -4,7 +4,8 @@ import java.io.IOException;
 import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Random;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -17,7 +18,7 @@ public class Main {
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
     Random rand = new Random();
 
-    Writer writer = Files.newBufferedWriter(Paths.get("layout.json"));
+    Writer writer = Files.newBufferedWriter(Paths.get("procs.json"));
 
     for (int i = 0; i < 5; i++) {// set up random procs
       int[] types_arr = rand.ints(3, 1, 6).distinct().toArray();

@@ -47,26 +47,26 @@ public class Link {
 
   public String canHazServs(ArrayList<Link> link_list, boolean selfServicing) {
     Map<Proc, Integer> connMap = MAP;
-    // boolean allSame = true;
-    for (Link link : link_list) {
+    boolean allSame = true;
+    getservs: for (Link link : link_list) {
       for (int serv : this.getServicesNeeded()) {
         for (int serv2 : link.getServicesProvided()) {
           if (serv == serv2) {
             connMap.put(link.proc, serv);
-            // for (int i = 0; i < this.getServicesNeeded().length; i++) {
-            // if (this.getServicesNeeded()[i] == serv) {
-            // allTrue[i] = true;
-            // }
-            // }
-            // for (boolean b : allTrue) {
-            // if (!b)
-            // allSame = false;
-            // }
-            // if (allSame) {
-            // break getservs;
-            // } else {
-            // continue;
-            // }
+            for (int i = 0; i < this.getServicesNeeded().length; i++) {
+              if (this.getServicesNeeded()[i] == serv) {
+                allTrue[i] = true;
+              }
+            }
+            for (boolean b : allTrue) {
+              if (!b)
+                allSame = false;
+            }
+            if (allSame) {
+              break getservs;
+            } else {
+              continue;
+            }
           }
         }
       }
