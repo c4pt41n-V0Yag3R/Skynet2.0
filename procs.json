@@ -5,28 +5,38 @@
       "type": "object",
       "properties": {
         "id": {
-          "type": "integer"
+          "type": "integer",
+          "description": "unique id of the process"
         },
         "allowed_types": {
           "type": "array",
           "items": {
-            "type": "integer"
-          }
+            "type": "integer",
+            "description": "allowed type of machine that can run this proc"
+          },
+          "minItems": 1
         },
         "servicesReq": {
           "type": "array",
           "items": {
-            "type": "integer"
+            "type": "integer",
+            "description": "enumerated services required by this proc"
           }
         },
         "servicesGivd": {
           "type": "array",
           "items": {
-            "type": "integer"
+            "type": "integer",
+            "description": "enumerated services provided by this proc once run"
           }
         },
+        "binded": {
+          "type": "boolean",
+          "description": "is this proc bound to any mach already"
+        },
         "numRssNeeded": {
-          "type": "integer"
+          "type": "integer",
+          "description": "# of rss needed to be supplied for this proc to run"
         }
       },
       "required": [
@@ -35,6 +45,28 @@
         "servicesReq",
         "servicesGivd",
         "numRssNeeded"
+      ]
+    },
+    "machine": {
+      "type": "object",
+      "properties": {
+        "machID": {
+          "type": "integer",
+          "description": "unique id of this machine"
+        },
+        "machType": {
+          "type": "integer",
+          "description": "type id of this machine"
+        },
+        "rssAvail": {
+          "type": "integer",
+          "description": "number of rss available to use at the start"
+        }
+      },
+      "required": [
+        "machID",
+        "machType",
+        "rssAvail"
       ]
     }
   }
