@@ -29,7 +29,7 @@ public class Machine {
       assert boundProcs.size() == numBinds;
       assert rssAvail >= 0;
     } catch (Exception e) {
-      throw new BadMachineException("links tampered with!");
+      throw new BadMachineException("BAD MACHINE " + iD);
     }
   }
 

@@ -38,13 +38,19 @@ public class Proc {
 
   public void validateProc() throws BadProcException {
     try {
+      // must have valid types to use
+      assert !(types == null) && (types.length >= 1);
+
+      // must have valid # rss
+      assert !(numRss < 0);
+      // servGiv and servReq must be disjoint
       for (int i : servGiv) {
         for (int j : servReq) {
           assert !(i == j);
         }
       }
     } catch (Exception e) {
-      throw new BadProcException("BAD PROC; cant provide & require identical service");
+      throw new BadProcException("BAD PROC " + iD);
     }
   }
 

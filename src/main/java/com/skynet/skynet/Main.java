@@ -2,15 +2,18 @@ package com.skynet.skynet;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 public class Main {
-  public static void main(String[] args) throws BadLinkingException, IOException {
+  public static void main(String[] args)
+      throws BadProcException, BadMachineException, BadLinkingException, IOException {
     ArrayList<Proc> proc_list = new ArrayList<Proc>();
     ArrayList<Machine> mach_list = new ArrayList<Machine>();
     ArrayList<Link> link_list = new ArrayList<Link>(); // haha
@@ -18,23 +21,50 @@ public class Main {
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
     Random rand = new Random();
 
-    Writer writer = Files.newBufferedWriter(Paths.get("procs.json"));
+    // Writer writer = Files.newBufferedWriter(Paths.get("proclayout.json"));
+    // Writer writer1 = Files.newBufferedWriter(Paths.get("machlayout.json"));
 
-    for (int i = 0; i < 5; i++) {// set up random procs
-      int[] types_arr = rand.ints(3, 1, 6).distinct().toArray();
-      int[] sReq_arr = rand.ints(3, 0, 5).distinct().toArray();
-      int[] sGivd_arr = rand.ints(3, 0, 5).distinct().toArray();
-      int numRss = rand.nextInt(5) + 5;
-      proc_list.add(new Proc(i, types_arr, sReq_arr, sGivd_arr, numRss));
+    // for (int i = 0; i < 5; i++) {// set up random procs
+    // int[] types_arr = rand.ints(3, 1, 6).distinct().toArray();
+    // int[] sReq_arr = rand.ints(3, 0, 5).distinct().toArray();
+    // int[] sGivd_arr = rand.ints(3, 0, 5).distinct().toArray();
+    // int numRss = rand.nextInt(5) + 5;
+    // proc_list.add(new Proc(i, types_arr, sReq_arr, sGivd_arr, numRss));
+    // }
+    // gson.toJson(proc_list, writer);
+    // writer.flush();
+    // writer.close();
+
+    Reader reader = Files.newBufferedReader(Paths.get("proclayout.json"));
+
+    Proc[] fromJson = gson.fromJson(reader, Proc[].class);
+    proc_list.addAll(Arrays.asList(fromJson));
+    for (Proc proc : proc_list) {
+      try {
+        proc.validateProc();
+      } catch (Exception e) {
+        System.out.println("PROC " + proc.getID() + " INVALID!");
+      }
     }
-    gson.toJson(proc_list, writer);
-    writer.flush();
-    writer.close();
-    for (int i = 0; i < 5; i++) {// set up random machines
-      int type = rand.nextInt(5) + 1;
-      int numRss = rand.nextInt(5) + 5;
-      mach_list.add(new Machine(i, type, numRss));
+
+    // for (int i = 0; i < 5; i++) {// set up random machines
+    // int type = rand.nextInt(5) + 1;
+    // int numRss = rand.nextInt(5) + 5;
+    // mach_list.add(new Machine(i, type, numRss));
+    // }
+
+    // gson.toJson(mach_list, writer1);
+    // writer1.flush();
+    // writer1.close();
+
+    Reader reader1 = Files.newBufferedReader(Paths.get("machlayout.json"));
+
+    Machine[] fromJson1 = gson.fromJson(reader1, Machine[].class);
+    mach_list.addAll(Arrays.asList(fromJson1));
+    for (Machine machine : mach_list) {
+      machine.validateMach();
     }
+    // System.out.println(mach_list);
 
     for (Proc proc : proc_list) {// O(p*m*t); p=#procs, m=#mach, t=#types
       ArrayList<Machine> vmachList = new ArrayList<Machine>();
