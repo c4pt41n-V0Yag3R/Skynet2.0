@@ -61,6 +61,9 @@
         "rssAvail": {
           "type": "integer",
           "description": "number of rss available to use at the start"
+        },
+        "boundTo": {
+          "type": "array"
         }
       },
       "required": [

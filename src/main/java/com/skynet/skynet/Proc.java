@@ -36,6 +36,19 @@ public class Proc {
         + "\nIs Binded: " + binded + "\n\n";
   }
 
+  public void validateProc(ArrayList<Proc> p_list) throws BadProcException {
+    try {
+      for (Proc proc : p_list) {
+        if (equals(proc)) {
+          continue;
+        }
+        assert iD != proc.getID();
+      }
+    } catch (Exception e) {
+      throw new BadProcException("PROC " + iD + " HAS CONFLICTS");
+    }
+  }
+
   public void validateProc() throws BadProcException {
     try {
       // must have valid types to use
@@ -49,13 +62,23 @@ public class Proc {
           assert !(i == j);
         }
       }
+      if (boundedTo == null) {
+        boundedTo = new Machine();
+      }
     } catch (Exception e) {
       throw new BadProcException("BAD PROC " + iD);
     }
   }
 
   public boolean equals(Proc p) {
-    return iD == p.getID();
+    Arrays.sort(types);
+    Arrays.sort(servReq);
+    Arrays.sort(servGiv);
+    Arrays.sort(p.getTypes());
+    Arrays.sort(p.getServReq());
+    Arrays.sort(p.getServGiv());
+    return (iD == p.getID()) && Arrays.equals(types, p.getTypes()) && Arrays.equals(servReq, p.getServReq())
+        && Arrays.equals(servGiv, p.getServGiv()) && (binded == p.getBinded()) && (boundedTo.equals(p.getBoundedTo()));
   }
 
   public int getID() {

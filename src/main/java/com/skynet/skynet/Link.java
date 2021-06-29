@@ -3,12 +3,13 @@ package com.skynet.skynet;
 import java.util.*;
 
 public class Link {
-  private static final Map<Proc, Integer> MAP = (Map<Proc, Integer>) new HashMap<Proc, Integer>();
-  private int[] servicesNeeded;
-  private int[] servicesProvided;
+  // private int[] servicesNeeded;
+  // private int[] servicesProvided;
   private boolean[] allTrue;
   private Proc proc;
   private Machine mach;
+  // private int procID = proc.getID();
+  // private int machID = mach.getID();
 
   public Link(Proc p, Machine m, boolean isTest) throws BadLinkingException {
     validateLink(p, m);
@@ -18,9 +19,9 @@ public class Link {
       m.setRssAvail(Math.max(m.getRssAvail() - p.getNumRss(), 0));
       m.boundProcs.add(p);
       m.setNumBinds(m.getNumBinds() + 1);
-      servicesNeeded = p.getServReq();
-      allTrue = new boolean[servicesNeeded.length];
-      servicesProvided = p.getServGiv();
+      // servicesNeeded = p.getServReq();
+      allTrue = new boolean[p.getServReq().length];
+      // servicesProvided = p.getServGiv();
 
       proc = p;
       mach = m;
@@ -46,7 +47,7 @@ public class Link {
   }
 
   public String canHazServs(ArrayList<Link> link_list, boolean selfServicing) {
-    Map<Proc, Integer> connMap = MAP;
+    Map<Proc, Integer> connMap = (Map<Proc, Integer>) new HashMap<Proc, Integer>();
     boolean allSame = true;
     getservs: for (Link link : link_list) {
       for (int serv : this.getServicesNeeded()) {
@@ -90,20 +91,20 @@ public class Link {
   // }
 
   public int[] getServicesNeeded() {
-    return this.servicesNeeded;
+    return proc.getServReq();
   }
 
-  public void setServicesNeeded(int[] servicesNeeded) {
-    this.servicesNeeded = servicesNeeded;
-  }
+  // public void setServicesNeeded(int[] servicesNeeded) {
+  // this.servicesNeeded = servicesNeeded;
+  // }
 
   public int[] getServicesProvided() {
-    return this.servicesProvided;
+    return proc.getServGiv();
   }
 
-  public void setServicesProvided(int[] servicesProvided) {
-    this.servicesProvided = servicesProvided;
-  }
+  // public void setServicesProvided(int[] servicesProvided) {
+  // this.servicesProvided = servicesProvided;
+  // }
 
   public String toString() {
     return "PROC " + proc.getID() + " -> MACH " + mach.getID() + "\n" + proc.toString() + mach.toString();

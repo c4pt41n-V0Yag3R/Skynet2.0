@@ -1,13 +1,12 @@
 package com.skynet.skynet;
 
 import java.io.IOException;
-import java.io.Writer;
 import java.io.Reader;
+import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Random;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -19,9 +18,8 @@ public class Main {
     ArrayList<Link> link_list = new ArrayList<Link>(); // haha
 
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    Random rand = new Random();
 
-    // Writer writer = Files.newBufferedWriter(Paths.get("proclayout.json"));
+    Writer writer = Files.newBufferedWriter(Paths.get("linklayout.json"));
     // Writer writer1 = Files.newBufferedWriter(Paths.get("machlayout.json"));
 
     // for (int i = 0; i < 5; i++) {// set up random procs
@@ -42,6 +40,7 @@ public class Main {
     for (Proc proc : proc_list) {
       try {
         proc.validateProc();
+        proc.validateProc(proc_list);
       } catch (Exception e) {
         System.out.println("PROC " + proc.getID() + " INVALID!");
       }
@@ -90,6 +89,9 @@ public class Main {
     for (Link link : link_list) {
       System.out.println(link.canHazServs(link_list, false));
     }
-    System.out.println(link_list);
+    // System.out.println(link_list);
+    gson.toJson(link_list, writer);
+    writer.flush();
+    writer.close();
   }
 }

@@ -17,6 +17,12 @@ public class Machine {
   ArrayList<Proc> boundProcs;
   private int numBinds = 0;
 
+  public Machine() {
+    iD = 999999999;
+    type = 0;
+    rssAvail = 99999;
+  }
+
   public Machine(int machID, int machType, int rssAvail) {
     this.iD = machID;
     this.type = machType;
