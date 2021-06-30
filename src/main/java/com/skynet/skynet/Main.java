@@ -11,6 +11,18 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 public class Main {
+  public static boolean validateSystem(ArrayList<Link> link_list) {
+    for (Link link : link_list) {
+      boolean[] arr = link.getAllTrue();
+      for (boolean b : arr) {
+        if (!b) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
   public static void main(String[] args)
       throws BadProcException, BadMachineException, BadLinkingException, IOException {
     ArrayList<Proc> proc_list = new ArrayList<Proc>();
@@ -90,7 +102,10 @@ public class Main {
       System.out.println(link.canHazServs(link_list, false));
     }
     // System.out.println(link_list);
-    gson.toJson(link_list, writer);
+    if (validateSystem(link_list))
+      gson.toJson(link_list, writer);
+    else
+      System.out.println("LINK SYSTEM IS INVALID");
     writer.flush();
     writer.close();
   }

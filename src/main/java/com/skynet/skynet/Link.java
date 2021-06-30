@@ -3,13 +3,14 @@ package com.skynet.skynet;
 import java.util.*;
 
 public class Link {
-  // private int[] servicesNeeded;
-  // private int[] servicesProvided;
-  private boolean[] allTrue;
-  private Proc proc;
-  private Machine mach;
-  // private int procID = proc.getID();
-  // private int machID = mach.getID();
+  private int[] servicesNeeded;
+  // connMap has keys as proc ids, vals as the services that key provides
+  private Map<Integer, Integer> connMap = new HashMap<Integer, Integer>();
+  private int[] servicesProvided;
+  private transient boolean[] allTrue;
+  private int procID;
+  private int machID;
+  private transient String toStr;
 
   public Link(Proc p, Machine m, boolean isTest) throws BadLinkingException {
     validateLink(p, m);
@@ -19,14 +20,16 @@ public class Link {
       m.setRssAvail(Math.max(m.getRssAvail() - p.getNumRss(), 0));
       m.boundProcs.add(p);
       m.setNumBinds(m.getNumBinds() + 1);
-      // servicesNeeded = p.getServReq();
+      servicesNeeded = p.getServReq();
       allTrue = new boolean[p.getServReq().length];
-      // servicesProvided = p.getServGiv();
+      servicesProvided = p.getServGiv();
 
-      proc = p;
-      mach = m;
+      procID = p.getID();
+      machID = m.getID();
 
-      System.out.println("Link Established between Process " + p.getID() + " and Machine " + m.getID());
+      toStr = "PROC " + procID + " -> MACH " + machID + "\n" + p.toString() + m.toString();
+
+      System.out.println("Link Established between Process " + procID + " and Machine " + machID);
     }
   }
 
@@ -47,13 +50,12 @@ public class Link {
   }
 
   public String canHazServs(ArrayList<Link> link_list, boolean selfServicing) {
-    Map<Proc, Integer> connMap = (Map<Proc, Integer>) new HashMap<Proc, Integer>();
     boolean allSame = true;
     getservs: for (Link link : link_list) {
       for (int serv : this.getServicesNeeded()) {
         for (int serv2 : link.getServicesProvided()) {
           if (serv == serv2) {
-            connMap.put(link.proc, serv);
+            connMap.put(link.procID, serv);
             for (int i = 0; i < this.getServicesNeeded().length; i++) {
               if (this.getServicesNeeded()[i] == serv) {
                 allTrue[i] = true;
@@ -73,12 +75,12 @@ public class Link {
       }
     }
     String res = "";
-    for (Proc p : connMap.keySet()) {
-      if (!selfServicing && proc.equals(p)) {// hacky af
+    for (int p : connMap.keySet()) {
+      if (!selfServicing && (procID == p)) {// hacky af
         continue;
       }
-      res += "PROC " + proc.getID() + "(bound to MACH " + mach.getID() + ") can get service " + connMap.get(p)
-          + " from PROC " + p.getID() + "\n";
+      res += "PROC " + procID + "(bound to MACH " + machID + ") can get service " + connMap.get(p) + " from PROC " + p
+          + "\n";
     }
     return res;
   }
@@ -91,7 +93,7 @@ public class Link {
   // }
 
   public int[] getServicesNeeded() {
-    return proc.getServReq();
+    return servicesNeeded;
   }
 
   // public void setServicesNeeded(int[] servicesNeeded) {
@@ -99,7 +101,11 @@ public class Link {
   // }
 
   public int[] getServicesProvided() {
-    return proc.getServGiv();
+    return servicesProvided;
+  }
+
+  public boolean[] getAllTrue() {
+    return this.allTrue;
   }
 
   // public void setServicesProvided(int[] servicesProvided) {
@@ -107,6 +113,6 @@ public class Link {
   // }
 
   public String toString() {
-    return "PROC " + proc.getID() + " -> MACH " + mach.getID() + "\n" + proc.toString() + mach.toString();
+    return toStr;
   }
 }

@@ -16,11 +16,12 @@ public class Machine {
   private int rssAvail;
   ArrayList<Proc> boundProcs;
   private int numBinds = 0;
+  private final int specID = Integer.MAX_VALUE;
 
   public Machine() {
-    iD = 999999999;
+    iD = specID;
     type = 0;
-    rssAvail = 99999;
+    rssAvail = 0;
   }
 
   public Machine(int machID, int machType, int rssAvail) {
@@ -34,6 +35,11 @@ public class Machine {
     try {
       assert boundProcs.size() == numBinds;
       assert rssAvail >= 0;
+      if (boundProcs.size() >= 1) {
+        for (Proc proc : boundProcs) {
+          assert proc.getBinded();
+        }
+      }
     } catch (Exception e) {
       throw new BadMachineException("BAD MACHINE " + iD);
     }
