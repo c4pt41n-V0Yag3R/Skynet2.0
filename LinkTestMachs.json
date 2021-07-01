@@ -34,5 +34,24 @@
     },
     "boundProcs": [],
     "numBinds": 0
+  },
+  {
+    "id": 4,
+    "type": 2,
+    "rssAvail": {
+      "unknownRssType": 10
+    },
+    "boundProcs": [],
+    "numBinds": 0
+  },
+  {
+    "id": 5,
+    "type": 2,
+    "rssAvail": {
+      "unknownRssType": 10,
+      "rssType1": 10
+    },
+    "boundProcs": [],
+    "numBinds": 0
   }
 ]

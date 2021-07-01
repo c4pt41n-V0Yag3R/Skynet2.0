@@ -40,5 +40,9 @@ public class LinkTest {
     // tM2 does not have enough rss
     assertFalse(assValLink(proc_arr[0], mach_arr[2]));
     assertTrue(assValLink(proc_arr[0], mach_arr[3]));
+    // tM4 does not have the correct rss
+    assertFalse(assValLink(proc_arr[0], mach_arr[4]));
+    // tM5 has both a correct rss and not correct rss
+    assertTrue(assValLink(proc_arr[0], mach_arr[5]));
   }
 }

@@ -32,19 +32,6 @@ public class Main {
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     Writer writer = Files.newBufferedWriter(Paths.get("linklayout.json"));
-    // Writer writer1 = Files.newBufferedWriter(Paths.get("machlayout.json"));
-
-    // for (int i = 0; i < 5; i++) {// set up random procs
-    // int[] types_arr = rand.ints(3, 1, 6).distinct().toArray();
-    // int[] sReq_arr = rand.ints(3, 0, 5).distinct().toArray();
-    // int[] sGivd_arr = rand.ints(3, 0, 5).distinct().toArray();
-    // int numRss = rand.nextInt(5) + 5;
-    // proc_list.add(new Proc(i, types_arr, sReq_arr, sGivd_arr, numRss));
-    // }
-    // gson.toJson(proc_list, writer);
-    // writer.flush();
-    // writer.close();
-
     Reader reader = Files.newBufferedReader(Paths.get("proclayout.json"));
 
     Proc[] fromJson = gson.fromJson(reader, Proc[].class);
@@ -57,16 +44,6 @@ public class Main {
         System.out.println("PROC " + proc.getID() + " INVALID!");
       }
     }
-
-    // for (int i = 0; i < 5; i++) {// set up random machines
-    // int type = rand.nextInt(5) + 1;
-    // int numRss = rand.nextInt(5) + 5;
-    // mach_list.add(new Machine(i, type, numRss));
-    // }
-
-    // gson.toJson(mach_list, writer1);
-    // writer1.flush();
-    // writer1.close();
 
     Reader reader1 = Files.newBufferedReader(Paths.get("machlayout.json"));
 
