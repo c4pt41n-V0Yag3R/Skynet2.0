@@ -1,0 +1,20 @@
+[
+  {
+    "id": 0,
+    "type": 1,
+    "rssAvail": {
+      "rssType1": 10
+    },
+    "boundProcs": [],
+    "numBinds": 0
+  },
+  {
+    "id": 1,
+    "type": 2,
+    "rssAvail": {
+      "rssType1": 10
+    },
+    "boundProcs": [],
+    "numBinds": 0
+  }
+]

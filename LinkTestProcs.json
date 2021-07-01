@@ -1,0 +1,24 @@
+[
+  {
+    "iD": 0,
+    "types": [
+      1,
+      2,
+      3
+    ],
+    "servReq": [
+      1,
+      2,
+      3
+    ],
+    "servGiv": [
+      3,
+      4,
+      5
+    ],
+    "binded": false,
+    "numRss": {
+      "rssType1": 10
+    }
+  }
+]
