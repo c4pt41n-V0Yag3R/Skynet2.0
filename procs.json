@@ -35,7 +35,7 @@
           "description": "is this proc bound to any mach already"
         },
         "numRssNeeded": {
-          "type": "integer",
+          "type": "object",
           "description": "# of rss needed to be supplied for this proc to run"
         }
       },
@@ -59,7 +59,7 @@
           "description": "type id of this machine"
         },
         "rssAvail": {
-          "type": "integer",
+          "type": "object",
           "description": "number of rss available to use at the start"
         },
         "boundTo": {

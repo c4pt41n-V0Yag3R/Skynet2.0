@@ -77,6 +77,22 @@ public class Main {
     }
     // System.out.println(mach_list);
 
+    createLinks(proc_list, mach_list, link_list);
+    // Pair links up with e.o. to share services if needed
+    for (Link link : link_list) {
+      System.out.println(link.canHazServs(link_list, false));
+    }
+    // System.out.println(link_list);
+    if (validateSystem(link_list))
+      gson.toJson(link_list, writer);
+    else
+      System.out.println("LINK SYSTEM IS INVALID");
+    writer.flush();
+    writer.close();
+  }
+
+  private static void createLinks(ArrayList<Proc> proc_list, ArrayList<Machine> mach_list, ArrayList<Link> link_list)
+      throws BadLinkingException {
     for (Proc proc : proc_list) {// O(p*m*t); p=#procs, m=#mach, t=#types
       ArrayList<Machine> vmachList = new ArrayList<Machine>();
       for (Machine mach : mach_list) {
@@ -97,16 +113,5 @@ public class Main {
       }
       link_list.add(new Link(proc, minMach, false));
     }
-    // Pair links up with e.o. to share services if needed
-    for (Link link : link_list) {
-      System.out.println(link.canHazServs(link_list, false));
-    }
-    // System.out.println(link_list);
-    if (validateSystem(link_list))
-      gson.toJson(link_list, writer);
-    else
-      System.out.println("LINK SYSTEM IS INVALID");
-    writer.flush();
-    writer.close();
   }
 }

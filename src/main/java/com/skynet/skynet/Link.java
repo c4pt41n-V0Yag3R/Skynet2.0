@@ -17,7 +17,9 @@ public class Link {
     if (!isTest) {
       p.setBinded(true);
       p.setBoundedTo(m);
-      m.setRssAvail(Math.max(m.getRssAvail() - p.getNumRss(), 0));
+      for (String rssType : p.getRssTypes()) {
+        m.setRssTypeAvail(rssType, Math.max(m.getRssTypeAvail(rssType) - p.getNumRssType(rssType), 0));
+      }
       m.boundProcs.add(p);
       m.setNumBinds(m.getNumBinds() + 1);
       servicesNeeded = p.getServReq();
@@ -44,9 +46,17 @@ public class Link {
     if (!contains)
       throw new BadLinkingException(
           "LINK BETWEEN: Process " + p.getID() + " AND Machine " + m.getID() + " IS IMPOSSIBLE; bad typing");
-    if (p.getNumRss() > m.getRssAvail() || p.getBinded())
+    if (p.getBinded()) {
       throw new BadLinkingException(
-          "LINK BETWEEN: Process " + p.getID() + " AND Machine " + m.getID() + " IS IMPOSSIBLE; bad rss use");
+          "LINK BETWEEN: Process " + p.getID() + " AND Machine " + m.getID() + " IS IMPOSSIBLE; proc already bound");
+
+    }
+    for (String rssType : p.getRssTypes()) {
+      if (!(m.getRssTypes().contains(rssType)) || m.getRssTypeAvail(rssType) < p.getNumRssType(rssType)) {
+        throw new BadLinkingException(
+            "LINK BETWEEN: Process " + p.getID() + " AND Machine " + m.getID() + " IS IMPOSSIBLE; bad rss use");
+      }
+    }
   }
 
   public String canHazServs(ArrayList<Link> link_list, boolean selfServicing) {

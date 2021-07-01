@@ -2,6 +2,14 @@ package com.skynet.skynet;
 
 import static org.junit.Assert.*;
 
+import java.io.IOException;
+import java.io.Reader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import org.junit.Test;
 
 public class LinkTest {
@@ -16,23 +24,21 @@ public class LinkTest {
   }
 
   @Test
-  public void testValidateLink() {
+  public void testValidateLink() throws IOException {
+    Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    Reader readerProcs = Files.newBufferedReader(Paths.get("LinkTestProcs.json"));
+    Reader readerMachs = Files.newBufferedReader(Paths.get("LinkTestMachs.json"));
+    Proc[] proc_arr = gson.fromJson(readerProcs, Proc[].class);
+    Machine[] mach_arr = gson.fromJson(readerMachs, Machine[].class);
     // enforce that a link btwn proc p and mach m only exists if mach has enough
     // rss, and if is of an allowed type according to proc
-    int[] types0 = { 1, 2, 3 };
-    int[] serR0 = { 1, 2, 3 };
-    int[] serG0 = { 3, 4, 5 };
-    Proc testProc0 = new Proc(0, types0, serR0, serG0, 10);
-    Machine testMach0 = new Machine(0, 1, 20);
-    Machine testMach1 = new Machine(1, 4, 20);
-    Machine testMach2 = new Machine(2, 2, 9);
-    Machine testMach3 = new Machine(3, 3, 10);
+
     // tM0 has more rss than tP0 needs, and is of correct type
-    assertTrue(assValLink(testProc0, testMach0));
+    assertTrue(assValLink(proc_arr[0], mach_arr[0]));
     // tM1 is not in type array of tP0
-    assertFalse(assValLink(testProc0, testMach1));
+    assertFalse(assValLink(proc_arr[0], mach_arr[1]));
     // tM2 does not have enough rss
-    assertFalse(assValLink(testProc0, testMach2));
-    assertTrue(assValLink(testProc0, testMach3));
+    assertFalse(assValLink(proc_arr[0], mach_arr[2]));
+    assertTrue(assValLink(proc_arr[0], mach_arr[3]));
   }
 }

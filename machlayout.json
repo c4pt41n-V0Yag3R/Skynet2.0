@@ -1,36 +1,19 @@
 [
   {
     "iD": 0,
-    "type": 3,
-    "rssAvail": 8,
+    "type": 1,
+    "rssAvail": {
+      "generic rss 1": 10
+    },
     "boundProcs": [],
     "numBinds": 0
   },
   {
     "iD": 1,
-    "type": 4,
-    "rssAvail": 8,
-    "boundProcs": [],
-    "numBinds": 0
-  },
-  {
-    "iD": 2,
-    "type": 4,
-    "rssAvail": 6,
-    "boundProcs": [],
-    "numBinds": 0
-  },
-  {
-    "iD": 3,
-    "type": 5,
-    "rssAvail": 6,
-    "boundProcs": [],
-    "numBinds": 0
-  },
-  {
-    "iD": 4,
-    "type": 5,
-    "rssAvail": 6,
+    "type": 2,
+    "rssAvail": {
+      "generic rss 2": 10
+    },
     "boundProcs": [],
     "numBinds": 0
   }

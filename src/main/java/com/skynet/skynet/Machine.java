@@ -13,7 +13,7 @@ import java.util.*;
 public class Machine {
   private int iD;
   private int type;
-  private int rssAvail;
+  private Map<String, Integer> rssAvail;
   ArrayList<Proc> boundProcs;
   private int numBinds = 0;
   private final int specID = Integer.MAX_VALUE;
@@ -21,10 +21,10 @@ public class Machine {
   public Machine() {
     iD = specID;
     type = 0;
-    rssAvail = 0;
+    rssAvail = new HashMap<String, Integer>();
   }
 
-  public Machine(int machID, int machType, int rssAvail) {
+  public Machine(int machID, int machType, Map<String, Integer> rssAvail) {
     this.iD = machID;
     this.type = machType;
     this.rssAvail = rssAvail;
@@ -34,7 +34,7 @@ public class Machine {
   public void validateMach() throws BadMachineException {
     try {
       assert boundProcs.size() == numBinds;
-      assert rssAvail >= 0;
+      assert rssAvail.size() >= 0;
       if (boundProcs.size() >= 1) {
         for (Proc proc : boundProcs) {
           assert proc.getBinded();
@@ -46,19 +46,24 @@ public class Machine {
   }
 
   public boolean equals(Machine m) {
-    return ((iD == m.getID()) && (type == m.getMachType()));
+    return ((iD == m.getID()) && (type == m.getMachType())
+        && (Arrays.equals(boundProcs.toArray(), m.boundProcs.toArray())));
   }
 
   public int getID() {
     return iD;
   }
 
-  public int getRssAvail() {
-    return rssAvail;
+  public int getRssTypeAvail(String rssType) {
+    return rssAvail.get(rssType);
   }
 
-  public void setRssAvail(int rssAvail) {
-    this.rssAvail = rssAvail;
+  public Collection<String> getRssTypes() {
+    return rssAvail.keySet();
+  }
+
+  public void setRssTypeAvail(String rssType, int val) {
+    rssAvail.put(rssType, val);
   }
 
   public int getMachType() {

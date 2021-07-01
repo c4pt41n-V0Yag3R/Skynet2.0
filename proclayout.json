@@ -2,92 +2,33 @@
   {
     "iD": 0,
     "types": [
-      3,
-      4
-    ],
-    "servReq": [
-      3,
-      5,
-      0
-    ],
-    "servGiv": [
-      2,
-      4,
       1
     ],
+    "servReq": [
+      1
+    ],
+    "servGiv": [
+      2
+    ],
     "binded": false,
-    "numRss": 9
+    "numRss": {
+      "generic rss 1": 10
+    }
   },
   {
     "iD": 1,
     "types": [
-      5,
-      1
+      2
     ],
     "servReq": [
-      5,
-      2,
-      3
+      2
     ],
     "servGiv": [
-      0,
-      4,
       1
     ],
     "binded": false,
-    "numRss": 7
-  },
-  {
-    "iD": 2,
-    "types": [
-      1,
-      5
-    ],
-    "servReq": [
-      2,
-      3,
-      4
-    ],
-    "servGiv": [
-      0,
-      1
-    ],
-    "binded": false,
-    "numRss": 8
-  },
-  {
-    "iD": 3,
-    "types": [
-      2,
-      3
-    ],
-    "servReq": [
-      0,
-      4
-    ],
-    "servGiv": [
-      2,
-      3
-    ],
-    "binded": false,
-    "numRss": 8
-  },
-  {
-    "iD": 4,
-    "types": [
-      5,
-      3
-    ],
-    "servReq": [
-      2,
-      0
-    ],
-    "servGiv": [
-      1,
-      4,
-      3
-    ],
-    "binded": false,
-    "numRss": 7
+    "numRss": {
+      "generic rss 2": 10
+    }
   }
 ]

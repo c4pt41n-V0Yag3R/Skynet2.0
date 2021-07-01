@@ -19,9 +19,9 @@ public class Proc {
   private boolean binded = false;
   private Machine boundedTo;
 
-  private int numRss;
+  private HashMap<String, Integer> numRss;
 
-  public Proc(int iD, int[] types, int[] servReq, int[] servGiv, int numRss) {
+  public Proc(int iD, int[] types, int[] servReq, int[] servGiv, HashMap<String, Integer> numRss) {
     this.iD = iD;
     this.types = types;
     this.servReq = servReq;
@@ -55,7 +55,9 @@ public class Proc {
       assert !(types == null) && (types.length >= 1);
 
       // must have valid # rss
-      assert !(numRss < 0);
+      for (int i : numRss.values()) {
+        assert i >= 0;
+      }
       // servGiv and servReq must be disjoint
       for (int i : servGiv) {
         for (int j : servReq) {
@@ -89,12 +91,12 @@ public class Proc {
     return types;
   }
 
-  public int getNumRss() {
-    return numRss;
+  public Collection<String> getRssTypes() {
+    return numRss.keySet();
   }
 
-  public void setNumRss(int numRss) {
-    this.numRss = numRss;
+  public int getNumRssType(String rssType) {
+    return numRss.get(rssType);
   }
 
   public int[] getServReq() {
