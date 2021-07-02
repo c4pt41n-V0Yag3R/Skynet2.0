@@ -78,6 +78,7 @@ public class Machine {
     this.numBinds = numBinds;
   }
 
+  @Override
   public String toString() {
     return "MACHINE " + iD + "\n----------\nType: " + type + "\nRss Available: " + rssAvail + "\nNum Binds: " + numBinds
         + "\n\n";

@@ -29,6 +29,7 @@ public class Proc {
     this.numRss = numRss;
   }
 
+  @Override
   public String toString() {
     String name = "PROCESS " + iD + "\n------------";
     return name + "\nValid Mach Types: " + Arrays.toString(types) + "\nNum Rss needed: " + numRss

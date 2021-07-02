@@ -31,7 +31,6 @@ public class Main {
 
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-    Writer writer = Files.newBufferedWriter(Paths.get("linklayout.json"));
     Reader reader = Files.newBufferedReader(Paths.get("proclayout.json"));
 
     Proc[] fromJson = gson.fromJson(reader, Proc[].class);
@@ -39,7 +38,7 @@ public class Main {
     for (Proc proc : proc_list) {
       try {
         proc.validateProc();
-        proc.validateProc(proc_list);
+        // proc.validateProc(proc_list);
       } catch (Exception e) {
         System.out.println("PROC " + proc.getID() + " INVALID!");
       }
@@ -60,10 +59,9 @@ public class Main {
       System.out.println(link.canHazServs(link_list, false));
     }
     // System.out.println(link_list);
-    if (validateSystem(link_list))
-      gson.toJson(link_list, writer);
-    else
-      System.out.println("LINK SYSTEM IS INVALID");
+    Writer writer = Files.newBufferedWriter(Paths.get("linklayout.json"));
+    System.out.println("ALL ELEMENTS CONNECTED: " + validateSystem(link_list));
+    gson.toJson(link_list, writer);
     writer.flush();
     writer.close();
   }
