@@ -8,8 +8,8 @@ public class Link {
   private Map<Integer, Integer> connMap = new HashMap<Integer, Integer>();
   private int[] servicesProvided;
   private transient boolean[] allTrue;
-  private int procID;
-  private int machID;
+  public int procID;
+  public int machID;
   private transient String toStr;
 
   public Link(Proc p, Machine m, boolean isTest) throws BadLinkingException {
