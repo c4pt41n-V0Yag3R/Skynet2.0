@@ -6,15 +6,18 @@ import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.lang.reflect.Type;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 public class Main {
   public static boolean validateSystem(ArrayList<Link> link_list) {
     for (Link link : link_list) {
-      boolean[] arr = link.getAllTrue();
-      for (boolean b : arr) {
+      for (boolean b : link.getAllTrue()) {
         if (!b) {
           return false;
         }
@@ -25,40 +28,42 @@ public class Main {
 
   public static void main(String[] args)
       throws BadProcException, BadMachineException, BadLinkingException, IOException {
-    ArrayList<Proc> proc_list = new ArrayList<Proc>();
-    ArrayList<Machine> mach_list = new ArrayList<Machine>();
+    // setup
+    Map<Integer, Proc> proc_map = new HashMap<Integer, Proc>();
+    Map<Integer, Machine> mach_map = new HashMap<Integer, Machine>();
     ArrayList<Link> link_list = new ArrayList<Link>(); // haha
-
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
+    // get procs from json file
     Reader reader = Files.newBufferedReader(Paths.get("proclayout.json"));
-
-    Proc[] fromJson = gson.fromJson(reader, Proc[].class);
-    proc_list.addAll(Arrays.asList(fromJson));
-    for (Proc proc : proc_list) {
+    Type procMapType = new TypeToken<Map<Integer, Proc>>() {
+    }.getType();
+    proc_map = gson.fromJson(reader, procMapType);
+    for (Proc proc : proc_map.values()) {
       try {
         proc.validateProc();
-        // proc.validateProc(proc_list);
       } catch (Exception e) {
         System.out.println("PROC " + proc.getID() + " INVALID!");
       }
     }
 
+    // get machs from json file
     Reader reader1 = Files.newBufferedReader(Paths.get("machlayout.json"));
-
-    Machine[] fromJson1 = gson.fromJson(reader1, Machine[].class);
-    mach_list.addAll(Arrays.asList(fromJson1));
-    for (Machine machine : mach_list) {
+    Type machMachType = new TypeToken<Map<Integer, Machine>>() {
+    }.getType();
+    mach_map = gson.fromJson(reader1, machMachType);
+    for (Machine machine : mach_map.values()) {
       machine.validateMach();
     }
-    // System.out.println(mach_list);
 
-    createLinks(proc_list, mach_list, link_list);
+    createLinks(proc_map, mach_map, link_list);
+
     // Pair links up with e.o. to share services if needed
     for (Link link : link_list) {
       System.out.println(link.canHazServs(link_list, false));
     }
-    // System.out.println(link_list);
+
+    // write valid links to file
     Writer writer = Files.newBufferedWriter(Paths.get("linklayout.json"));
     System.out.println("ALL ELEMENTS CONNECTED: " + validateSystem(link_list));
     gson.toJson(link_list, writer);
@@ -66,11 +71,11 @@ public class Main {
     writer.close();
   }
 
-  private static void createLinks(ArrayList<Proc> proc_list, ArrayList<Machine> mach_list, ArrayList<Link> link_list)
-      throws BadLinkingException {
-    for (Proc proc : proc_list) {// O(p*m*t); p=#procs, m=#mach, t=#types
+  private static void createLinks(Map<Integer, Proc> proc_map, Map<Integer, Machine> mach_map,
+      ArrayList<Link> link_list) throws BadLinkingException {
+    for (Proc proc : proc_map.values()) {// O(p*m*t); p=#procs, m=#mach, t=#types
       ArrayList<Machine> vmachList = new ArrayList<Machine>();
-      for (Machine mach : mach_list) {
+      for (Machine mach : mach_map.values()) {
         // 1. find all machines that can run proc and store in vmachList
         try {
           new Link(proc, mach, true);
