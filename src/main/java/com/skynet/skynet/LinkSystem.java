@@ -15,10 +15,10 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 public class LinkSystem {
-  Map<Integer, Proc> proc_map = new HashMap<Integer, Proc>();
-  Map<Integer, Machine> mach_map = new HashMap<Integer, Machine>();
-  ArrayList<Link> link_list = new ArrayList<Link>(); // haha
-  Gson gson = new GsonBuilder().setPrettyPrinting().create();
+  static Map<Integer, Proc> proc_map = new HashMap<Integer, Proc>();
+  static Map<Integer, Machine> mach_map = new HashMap<Integer, Machine>();
+  static ArrayList<Link> link_list = new ArrayList<Link>(); // haha
+  static Gson gson = new GsonBuilder().setPrettyPrinting().create();
   Reader proc_reader;
   Reader mach_reader;
 
@@ -63,7 +63,8 @@ public class LinkSystem {
     writer.close();
   }
 
-  public static boolean validateSystem(ArrayList<Link> link_list) {
+  // checks if for all links all service requirements are fulfilled
+  public boolean validateSystem(ArrayList<Link> link_list) {
     for (Link link : link_list) {
       for (boolean b : link.getAllTrue()) {
         if (!b) {
@@ -74,7 +75,15 @@ public class LinkSystem {
     return true;
   }
 
-  public void destroyLink(Link link, Map<Integer, Proc> proc_map, Map<Integer, Machine> mach_map,
+  public static void addProc(Proc proc) {
+    proc_map.put(proc.getID(), proc);
+  }
+
+  public static void addMach(Machine mach) {
+    mach_map.put(mach.getID(), mach);
+  }
+
+  public static void destroyLink(Link link, Map<Integer, Proc> proc_map, Map<Integer, Machine> mach_map,
       ArrayList<Link> link_list) {
     Proc proc = proc_map.get(link.procID);
     Machine mach = mach_map.get(link.machID);

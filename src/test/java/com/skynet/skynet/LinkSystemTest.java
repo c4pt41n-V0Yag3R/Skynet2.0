@@ -7,16 +7,16 @@ import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.junit.Test;
 
-public class MainTest {
-  public static boolean validateSystem(ArrayList<Link> link_list) {
+public class LinkSystemTest {
+  public boolean validateSystem(ArrayList<Link> link_list) {
     for (Link link : link_list) {
-      boolean[] arr = link.getAllTrue();
-      for (boolean b : arr) {
+      for (boolean b : link.getAllTrue()) {
         if (!b) {
           return false;
         }
