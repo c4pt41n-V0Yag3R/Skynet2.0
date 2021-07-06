@@ -7,5 +7,6 @@ public class Main {
       throws BadProcException, BadMachineException, BadLinkingException, IOException {
     LinkSystem ls = new LinkSystem("proclayout.json", "machlayout.json", "linklayout.json");
     ls.create_new();
+    System.out.println(ls.toString());
   }
 }

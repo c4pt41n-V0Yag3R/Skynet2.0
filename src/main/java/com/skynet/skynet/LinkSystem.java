@@ -6,6 +6,7 @@ import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.lang.reflect.Type;
@@ -19,8 +20,8 @@ public class LinkSystem {
   static Map<Integer, Machine> mach_map = new HashMap<Integer, Machine>();
   static ArrayList<Link> link_list = new ArrayList<Link>(); // haha
   static Gson gson = new GsonBuilder().setPrettyPrinting().create();
-  Reader proc_reader;
-  Reader mach_reader;
+  static Reader proc_reader;
+  static Reader mach_reader;
 
   public LinkSystem(String procFile, String machFile, String linkFile)
       throws IOException, BadMachineException, BadLinkingException {
@@ -83,8 +84,25 @@ public class LinkSystem {
     mach_map.put(mach.getID(), mach);
   }
 
-  public static void destroyLink(Link link, Map<Integer, Proc> proc_map, Map<Integer, Machine> mach_map,
-      ArrayList<Link> link_list) {
+  public static void removeProc(Proc proc) {
+    for (Link link : link_list) {
+      if (link.procID == proc.getID()) {
+        removeLink(link);
+      }
+    }
+    proc_map.remove(proc.getID());
+  }
+
+  public static void removeMach(Machine mach) {
+    for (Link link : link_list) {
+      if (link.machID == mach.getID()) {
+        removeLink(link);
+      }
+    }
+    mach_map.remove(mach.getID());
+  }
+
+  public static void removeLink(Link link) {
     Proc proc = proc_map.get(link.procID);
     Machine mach = mach_map.get(link.machID);
     proc.setBinded(false);
@@ -97,9 +115,23 @@ public class LinkSystem {
     link_list.remove(link);
   }
 
+  public static Collection<Proc> getProcs() {
+    return proc_map.values();
+  }
+
+  public static Collection<Machine> getMachs() {
+    return mach_map.values();
+  }
+
+  public static Collection<Link> getLinks() {
+    return link_list;
+  }
+
   private static void createLinks(Map<Integer, Proc> proc_map, Map<Integer, Machine> mach_map,
       ArrayList<Link> link_list) throws BadLinkingException {
     for (Proc proc : proc_map.values()) {// O(p*m*t); p=#procs, m=#mach, t=#types
+      if (proc.getBinded())
+        continue;
       ArrayList<Machine> vmachList = new ArrayList<Machine>();
       for (Machine mach : mach_map.values()) {
         // 1. find all machines that can run proc and store in vmachList
@@ -119,5 +151,22 @@ public class LinkSystem {
       }
       link_list.add(new Link(proc, minMach, false));
     }
+  }
+
+  @Override
+  public String toString() {
+    String res = "";
+    for (Link link : link_list) {
+      res += link.toString();
+    }
+    res += "\nPROCESSES:\n\n";
+    for (Proc proc : proc_map.values()) {
+      res += proc.toString();
+    }
+    res += "\nMACHINES\n\n";
+    for (Machine mach : mach_map.values()) {
+      res += mach.toString();
+    }
+    return res;
   }
 }
