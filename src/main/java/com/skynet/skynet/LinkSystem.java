@@ -16,40 +16,66 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 public class LinkSystem {
-  static Map<Integer, Proc> proc_map = new HashMap<Integer, Proc>();
-  static Map<Integer, Machine> mach_map = new HashMap<Integer, Machine>();
-  static ArrayList<Link> link_list = new ArrayList<Link>(); // haha
-  static Gson gson = new GsonBuilder().setPrettyPrinting().create();
-  static Reader proc_reader;
-  static Reader mach_reader;
+  public int sysID;
+  public Map<Integer, Proc> proc_map = new HashMap<Integer, Proc>();
+  public Map<Integer, Machine> mach_map = new HashMap<Integer, Machine>();
+  public ArrayList<Link> link_list = new ArrayList<Link>(); // haha
+  private static transient Gson gson = new GsonBuilder().setPrettyPrinting().create();
+  private static transient Reader proc_reader;
+  private static transient Reader mach_reader;
 
   public LinkSystem(String procFile, String machFile, String linkFile)
-      throws IOException, BadMachineException, BadLinkingException {
-    // get procs from json file
-    proc_reader = Files.newBufferedReader(Paths.get(procFile));
-    Type procMapType = new TypeToken<Map<Integer, Proc>>() {
+      throws IOException, BadMachineException, BadLinkingException, BadProcException {
+    getProcsFromFile(procFile);
+    getMachsFromFile(machFile);
+  }
+
+  public LinkSystem(String procFile, String machFile)
+      throws IOException, BadMachineException, BadLinkingException, BadProcException {
+    getProcsFromFile(procFile);
+    getMachsFromFile(machFile);
+  }
+
+  private void getMachsFromFile(String machFile) throws IOException, BadMachineException {
+    mach_reader = Files.newBufferedReader(Paths.get(machFile));
+    Type machMapType = new TypeToken<Map<Integer, Machine>>() {
     }.getType();
-    proc_map = gson.fromJson(proc_reader, procMapType);
-    for (Proc proc : proc_map.values()) {
-      try {
-        proc.validateProc();
-      } catch (Exception e) {
-        System.out.println("PROC " + proc.getID() + " INVALID!");
+    Type machAListType = new TypeToken<ArrayList<Machine>>() {
+    }.getType();
+    try {
+      mach_map = gson.fromJson(mach_reader, machMapType);
+    } catch (Exception e) {
+      ArrayList<Machine> machs = gson.fromJson(mach_reader, machAListType);
+      for (Machine machine : machs) {
+        mach_map.put(machine.getID(), machine);
       }
     }
-
-    // get machs from json file
-    mach_reader = Files.newBufferedReader(Paths.get("machlayout.json"));
-    Type machMachType = new TypeToken<Map<Integer, Machine>>() {
-    }.getType();
-    mach_map = gson.fromJson(mach_reader, machMachType);
     for (Machine machine : mach_map.values()) {
       machine.validateMach();
     }
   }
 
+  private void getProcsFromFile(String procFile) throws IOException, BadProcException {
+    proc_reader = Files.newBufferedReader(Paths.get(procFile));
+    Type procMapType = new TypeToken<Map<Integer, Proc>>() {
+    }.getType();
+    Type procAListType = new TypeToken<ArrayList<Proc>>() {
+    }.getType();
+    try {
+      proc_map = gson.fromJson(proc_reader, procMapType);
+    } catch (Exception e) {
+      ArrayList<Proc> procs = gson.fromJson(proc_reader, procAListType);
+      for (Proc proc : procs) {
+        proc_map.put(proc.getID(), proc);
+      }
+    }
+    for (Proc proc : proc_map.values()) {
+      proc.validateProc();
+    }
+  }
+
   public void create_new() throws BadLinkingException, IOException {
-    createLinks(proc_map, mach_map, link_list);
+    createLinks(proc_map, mach_map);
 
     // Pair links up with e.o. to share services if needed
     for (Link link : link_list) {
@@ -58,14 +84,14 @@ public class LinkSystem {
 
     // write valid links to file
     Writer writer = Files.newBufferedWriter(Paths.get("linklayout.json"));
-    System.out.println("ALL LINK SERVICES FULFILLED: " + validateSystem(link_list));
+    System.out.println("ALL LINK SERVICES FULFILLED: " + validateSystem());
     gson.toJson(link_list, writer);
     writer.flush();
     writer.close();
   }
 
   // checks if for all links all service requirements are fulfilled
-  public boolean validateSystem(ArrayList<Link> link_list) {
+  public boolean validateSystem() {
     for (Link link : link_list) {
       for (boolean b : link.getAllTrue()) {
         if (!b) {
@@ -76,15 +102,15 @@ public class LinkSystem {
     return true;
   }
 
-  public static void addProc(Proc proc) {
+  public void addProc(Proc proc) {
     proc_map.put(proc.getID(), proc);
   }
 
-  public static void addMach(Machine mach) {
+  public void addMach(Machine mach) {
     mach_map.put(mach.getID(), mach);
   }
 
-  public static void removeProc(Proc proc) {
+  public void removeProc(Proc proc) {
     for (Link link : link_list) {
       if (link.procID == proc.getID()) {
         removeLink(link);
@@ -93,7 +119,7 @@ public class LinkSystem {
     proc_map.remove(proc.getID());
   }
 
-  public static void removeMach(Machine mach) {
+  public void removeMach(Machine mach) {
     for (Link link : link_list) {
       if (link.machID == mach.getID()) {
         removeLink(link);
@@ -102,7 +128,7 @@ public class LinkSystem {
     mach_map.remove(mach.getID());
   }
 
-  public static void removeLink(Link link) {
+  public void removeLink(Link link) {
     Proc proc = proc_map.get(link.procID);
     Machine mach = mach_map.get(link.machID);
     proc.setBinded(false);
@@ -115,20 +141,19 @@ public class LinkSystem {
     link_list.remove(link);
   }
 
-  public static Collection<Proc> getProcs() {
+  public Collection<Proc> getProcs() {
     return proc_map.values();
   }
 
-  public static Collection<Machine> getMachs() {
+  public Collection<Machine> getMachs() {
     return mach_map.values();
   }
 
-  public static Collection<Link> getLinks() {
+  public Collection<Link> getLinks() {
     return link_list;
   }
 
-  private static void createLinks(Map<Integer, Proc> proc_map, Map<Integer, Machine> mach_map,
-      ArrayList<Link> link_list) throws BadLinkingException {
+  private void createLinks(Map<Integer, Proc> proc_map, Map<Integer, Machine> mach_map) throws BadLinkingException {
     for (Proc proc : proc_map.values()) {// O(p*m*t); p=#procs, m=#mach, t=#types
       if (proc.getBinded())
         continue;

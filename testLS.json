@@ -1,0 +1,91 @@
+{
+  "sysID": 0,
+  "proc_map": {
+    "0": {
+      "iD": 0,
+      "types": [
+        1
+      ],
+      "servReq": [
+        1
+      ],
+      "servGiv": [
+        2
+      ],
+      "binded": true,
+      "boundedTo": 0,
+      "numRss": {
+        "generic rss 1": 10
+      }
+    },
+    "1": {
+      "iD": 1,
+      "types": [
+        2
+      ],
+      "servReq": [
+        2
+      ],
+      "servGiv": [
+        1
+      ],
+      "binded": true,
+      "boundedTo": 1,
+      "numRss": {
+        "generic rss 2": 10
+      }
+    }
+  },
+  "mach_map": {
+    "0": {
+      "iD": 0,
+      "type": 1,
+      "rssAvail": {
+        "generic rss 1": 0
+      },
+      "boundProcs": [
+        0
+      ],
+      "numBinds": 1
+    },
+    "1": {
+      "iD": 1,
+      "type": 2,
+      "rssAvail": {
+        "generic rss 2": 0
+      },
+      "boundProcs": [
+        1
+      ],
+      "numBinds": 1
+    }
+  },
+  "link_list": [
+    {
+      "servicesNeeded": [
+        1
+      ],
+      "connMap": {
+        "1": 1
+      },
+      "servicesProvided": [
+        2
+      ],
+      "procID": 0,
+      "machID": 0
+    },
+    {
+      "servicesNeeded": [
+        2
+      ],
+      "connMap": {
+        "0": 2
+      },
+      "servicesProvided": [
+        1
+      ],
+      "procID": 1,
+      "machID": 1
+    }
+  ]
+}

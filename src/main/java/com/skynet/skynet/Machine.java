@@ -14,9 +14,9 @@ public class Machine {
   private int iD;
   private int type;
   private Map<String, Integer> rssAvail;
-  ArrayList<Proc> boundProcs;
+  ArrayList<Integer> boundProcs;
   private int numBinds = 0;
-  private final int specID = Integer.MAX_VALUE;
+  private transient final int specID = Integer.MAX_VALUE;
 
   public Machine() {
     iD = specID;
@@ -28,18 +28,18 @@ public class Machine {
     this.iD = machID;
     this.type = machType;
     this.rssAvail = rssAvail;
-    boundProcs = new ArrayList<Proc>();
+    boundProcs = new ArrayList<Integer>();
   }
 
   public void validateMach() throws BadMachineException {
     try {
       assert boundProcs.size() == numBinds;
       assert rssAvail.size() >= 0;
-      if (boundProcs.size() >= 1) {
-        for (Proc proc : boundProcs) {
-          assert proc.getBinded();
-        }
-      }
+      // if (boundProcs.size() >= 1) {
+      // for (Proc proc : boundProcs) {
+      // assert proc.getBinded();
+      // }
+      // }
     } catch (Exception e) {
       throw new BadMachineException("BAD MACHINE " + iD);
     }

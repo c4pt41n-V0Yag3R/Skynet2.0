@@ -17,7 +17,7 @@ public class Proc {
   private int[] servReq;
   private int[] servGiv;
   private boolean binded = false;
-  private Machine boundedTo;
+  private int boundedTo;
 
   private HashMap<String, Integer> numRss;
 
@@ -65,9 +65,9 @@ public class Proc {
           assert !(i == j);
         }
       }
-      if (boundedTo == null) {
-        boundedTo = new Machine();
-      }
+      // if (boundedTo == null) {
+      // boundedTo = new Machine();
+      // }
     } catch (Exception e) {
       throw new BadProcException("BAD PROC " + iD);
     }
@@ -81,7 +81,7 @@ public class Proc {
     Arrays.sort(p.getServReq());
     Arrays.sort(p.getServGiv());
     return (iD == p.getID()) && Arrays.equals(types, p.getTypes()) && Arrays.equals(servReq, p.getServReq())
-        && Arrays.equals(servGiv, p.getServGiv()) && (binded == p.getBinded()) && (boundedTo.equals(p.getBoundedTo()));
+        && Arrays.equals(servGiv, p.getServGiv()) && (binded == p.getBinded()) && (boundedTo == p.getBoundedTo());
   }
 
   public int getID() {
@@ -116,11 +116,11 @@ public class Proc {
     this.binded = binded;
   }
 
-  public Machine getBoundedTo() {
+  public int getBoundedTo() {
     return this.boundedTo;
   }
 
   public void setBoundedTo(Machine boundedTo) {
-    this.boundedTo = boundedTo;
+    this.boundedTo = boundedTo.getID();
   }
 }

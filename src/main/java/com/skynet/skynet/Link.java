@@ -20,7 +20,7 @@ public class Link {
       for (String rssType : p.getRssTypes()) {
         m.setRssTypeAvail(rssType, Math.max(m.getRssTypeAvail(rssType) - p.getNumRssType(rssType), 0));
       }
-      m.boundProcs.add(p);
+      m.boundProcs.add(p.getID());
       m.setNumBinds(m.getNumBinds() + 1);
       servicesNeeded = p.getServReq();
       allTrue = new boolean[p.getServReq().length];
