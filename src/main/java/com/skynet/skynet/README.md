@@ -8,7 +8,7 @@ The map has keys as the process ids, and the values as the process themselves.
 
 Each process follows this schema:
 
-code()
+'code()
 "type": "object",
       "properties": {
         "iD": {
@@ -59,4 +59,4 @@ code()
         "binded",
         "numRss"
       ]
-    }
+    }'
