@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+
 import java.lang.reflect.Type;
 
 import com.google.gson.Gson;
@@ -19,6 +20,8 @@ public class LinkSystem {
   public int sysID;
   public Map<Integer, Proc> proc_map = new HashMap<Integer, Proc>();
   public Map<Integer, Machine> mach_map = new HashMap<Integer, Machine>();
+  public transient ArrayList<Proc> new_procs = new ArrayList<Proc>();
+  public transient ArrayList<Machine> new_machines = new ArrayList<Machine>();
   public ArrayList<Link> link_list = new ArrayList<Link>(); // haha
   private static transient Gson gson = new GsonBuilder().setPrettyPrinting().create();
   private static transient Reader proc_reader;
@@ -76,7 +79,17 @@ public class LinkSystem {
   // staticity -- for a preloaded system with new elems added, should the program
   // rebind everything or just the new stuff?
   public void create_new(boolean isStatic) throws BadLinkingException, IOException {
-    createLinks(proc_map.values(), mach_map.values());
+    if (isStatic) {
+      createLinks(new_procs, new_machines);
+    } else {
+      for (Proc proc : new_procs) {
+        proc_map.put(proc.getID(), proc);
+      }
+      for (Machine mach : new_machines) {
+        mach_map.put(mach.getID(), mach);
+      }
+      createLinks(proc_map.values(), mach_map.values());
+    }
 
     // Pair links up with e.o. to share services if needed
     for (Link link : link_list) {
@@ -103,12 +116,14 @@ public class LinkSystem {
     return true;
   }
 
-  public void addProc(Proc proc) {
-    proc_map.put(proc.getID(), proc);
+  public void addProc(Proc proc) throws BadProcException {
+    proc.validateProc();
+    new_procs.add(proc);
   }
 
-  public void addMach(Machine mach) {
-    mach_map.put(mach.getID(), mach);
+  public void addMach(Machine mach) throws BadMachineException {
+    mach.validateMach();
+    new_machines.add(mach);
   }
 
   public void removeProc(Proc proc) {
