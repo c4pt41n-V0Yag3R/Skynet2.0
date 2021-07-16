@@ -4,13 +4,13 @@
       1
     ],
     "connMap": {
-      "1": 1
+      "0": 1
     },
     "servicesProvided": [
       2
     ],
     "procID": 0,
-    "machID": 0
+    "machID": 2147483647
   },
   {
     "servicesNeeded": [
@@ -22,7 +22,7 @@
     "servicesProvided": [
       1
     ],
-    "procID": 1,
-    "machID": 1
+    "procID": 0,
+    "machID": 2147483647
   }
 ]

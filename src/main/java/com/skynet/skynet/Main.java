@@ -13,7 +13,7 @@ public class Main {
       throws BadProcException, BadMachineException, BadLinkingException, IOException {
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
     LinkSystem ls = new LinkSystem("proclayout.json", "machlayout.json", "linklayout.json");
-    ls.create_new();
+    ls.create_new(false);
     System.out.println(ls.toString());
     Writer writer = Files.newBufferedWriter(Paths.get("testLS.json"));
     gson.toJson(ls, writer);

@@ -10,7 +10,7 @@ public class LinkSystemTest {
   @Test
   public void testValidateSystem() throws BadLinkingException, IOException, BadMachineException, BadProcException {
     LinkSystem ls = new LinkSystem("MainTestProcs.json", "MainTestMachs.json");
-    ls.create_new();
+    ls.create_new(false);
     assertTrue(ls.validateSystem());
   }
 }

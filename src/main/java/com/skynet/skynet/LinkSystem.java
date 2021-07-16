@@ -28,6 +28,9 @@ public class LinkSystem {
       throws IOException, BadMachineException, BadLinkingException, BadProcException {
     getProcsFromFile(procFile);
     getMachsFromFile(machFile);
+    Type linkAlistType = new TypeToken<ArrayList<Link>>() {
+    }.getType();
+    link_list = gson.fromJson(linkFile, linkAlistType);
   }
 
   public LinkSystem(String procFile, String machFile)
@@ -40,16 +43,14 @@ public class LinkSystem {
     mach_reader = Files.newBufferedReader(Paths.get(machFile));
     Type machMapType = new TypeToken<Map<Integer, Machine>>() {
     }.getType();
-    Type machAListType = new TypeToken<ArrayList<Machine>>() {
-    }.getType();
-    try {
-      mach_map = gson.fromJson(mach_reader, machMapType);
-    } catch (Exception e) {
-      ArrayList<Machine> machs = gson.fromJson(mach_reader, machAListType);
-      for (Machine machine : machs) {
-        mach_map.put(machine.getID(), machine);
-      }
-    }
+    // try {
+    mach_map = gson.fromJson(mach_reader, machMapType);
+    // } catch (Exception e) {
+    // ArrayList<Machine> machs = gson.fromJson(mach_reader, machAListType);
+    // for (Machine machine : machs) {
+    // mach_map.put(machine.getID(), machine);
+    // }
+    // }
     for (Machine machine : mach_map.values()) {
       machine.validateMach();
     }
@@ -59,23 +60,23 @@ public class LinkSystem {
     proc_reader = Files.newBufferedReader(Paths.get(procFile));
     Type procMapType = new TypeToken<Map<Integer, Proc>>() {
     }.getType();
-    Type procAListType = new TypeToken<ArrayList<Proc>>() {
-    }.getType();
-    try {
-      proc_map = gson.fromJson(proc_reader, procMapType);
-    } catch (Exception e) {
-      ArrayList<Proc> procs = gson.fromJson(proc_reader, procAListType);
-      for (Proc proc : procs) {
-        proc_map.put(proc.getID(), proc);
-      }
-    }
+    // try {
+    proc_map = gson.fromJson(proc_reader, procMapType);
+    // } catch (Exception e) {
+    // ArrayList<Proc> procs = gson.fromJson(proc_reader, procAListType);
+    // for (Proc proc : procs) {
+    // proc_map.put(proc.getID(), proc);
+    // }
+    // }
     for (Proc proc : proc_map.values()) {
       proc.validateProc();
     }
   }
 
-  public void create_new() throws BadLinkingException, IOException {
-    createLinks(proc_map, mach_map);
+  // staticity -- for a preloaded system with new elems added, should the program
+  // rebind everything or just the new stuff?
+  public void create_new(boolean isStatic) throws BadLinkingException, IOException {
+    createLinks(proc_map.values(), mach_map.values());
 
     // Pair links up with e.o. to share services if needed
     for (Link link : link_list) {
@@ -136,7 +137,7 @@ public class LinkSystem {
     for (String rssType : proc.getRssTypes()) {
       mach.setRssTypeAvail(rssType, mach.getRssTypeAvail(rssType) + proc.getNumRssType(rssType));
     }
-    mach.boundProcs.remove(proc);
+    mach.boundProcs.remove(proc.getID());
     mach.setNumBinds(mach.getNumBinds() - 1);
     link_list.remove(link);
   }
@@ -153,12 +154,12 @@ public class LinkSystem {
     return link_list;
   }
 
-  private void createLinks(Map<Integer, Proc> proc_map, Map<Integer, Machine> mach_map) throws BadLinkingException {
-    for (Proc proc : proc_map.values()) {// O(p*m*t); p=#procs, m=#mach, t=#types
+  private void createLinks(Collection<Proc> procs, Collection<Machine> machs) throws BadLinkingException {
+    for (Proc proc : procs) {// O(p*m*t); p=#procs, m=#mach, t=#types
       if (proc.getBinded())
         continue;
       ArrayList<Machine> vmachList = new ArrayList<Machine>();
-      for (Machine mach : mach_map.values()) {
+      for (Machine mach : machs) {
         // 1. find all machines that can run proc and store in vmachList
         try {
           new Link(proc, mach, true);
