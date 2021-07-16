@@ -14,7 +14,7 @@
     <property name="os.name" value="Linux"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-11-openjdk-amd64/lib"/>
-    <property name="sun.java.command" value="/home/c4pt41n/projects/skynet/target/surefire/surefirebooter11395821011724796970.jar /home/c4pt41n/projects/skynet/target/surefire 2021-07-16T13-43-30_236-jvmRun1 surefire3950107601780636559tmp surefire_08576061137134979398tmp"/>
+    <property name="sun.java.command" value="/home/c4pt41n/projects/skynet/target/surefire/surefirebooter1052141805519365190.jar /home/c4pt41n/projects/skynet/target/surefire 2021-07-16T15-17-26_464-jvmRun1 surefire11815978205125560342tmp surefire_06515156609334148335tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="/home/c4pt41n/projects/skynet/target/test-classes:/home/c4pt41n/projects/skynet/target/classes:/home/c4pt41n/.m2/repository/junit/junit/4.13.1/junit-4.13.1.jar:/home/c4pt41n/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:/home/c4pt41n/.m2/repository/com/google/code/gson/gson/2.8.6/gson-2.8.6.jar:"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -30,7 +30,7 @@
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.awt.graphicsenv" value="sun.awt.X11GraphicsEnvironment"/>
-    <property name="surefire.real.class.path" value="/home/c4pt41n/projects/skynet/target/surefire/surefirebooter11395821011724796970.jar"/>
+    <property name="surefire.real.class.path" value="/home/c4pt41n/projects/skynet/target/surefire/surefirebooter1052141805519365190.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="11.0.10+9-Ubuntu-0ubuntu1.20.04"/>
     <property name="user.name" value="c4pt41n"/>
